@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cerita Kita ✨ — Selamat Ulang Tahun, Aurel!</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+</head>
+<body>
+
+  <!-- Outer Stage Wrapper (Locked 16:9 Aspect Ratio for 15.6" Laptop Display) -->
+  <div id="game-stage" class="game-stage">
+
+    <!-- ═══════════════════════════════════════════
+         1. TITLE SCREEN
+         ═══════════════════════════════════════════ -->
+    <section id="title-screen" class="screen screen--active">
+
+      <!-- Audio Toggle (top-right safe margin) -->
+      <button id="title-audio-toggle" class="btn btn-icon title-audio-toggle" aria-label="Toggle Audio">
+        <span class="icon-audio-on">🔊</span>
+        <span class="icon-audio-off" style="display:none;">🔇</span>
+      </button>
+
+      <!-- Decorative Pastel Shapes -->
+      <div class="title-deco" aria-hidden="true"></div>
+
+      <!-- Main Content -->
+      <div class="title-content">
+        <p class="title-birthday-greeting">Selamat Ulang Tahun, Aurel! 🎂</p>
+
+        <h1 class="title-heading">Cerita Kita <span class="title-sparkle">✨</span></h1>
+        <p class="title-subtitle">Sebuah cerita kecil tentang kamu, aku, dan semua momen indah yang kita lalui.</p>
+
+        <div class="title-buttons">
+          <button id="btn-start-game" class="btn btn-primary btn-lg">
+            <span>💌</span> Mulai Cerita
+          </button>
+          <button id="btn-chapter-select" class="btn btn-secondary btn-lg is-locked" disabled title="Tamatkan cerita terlebih dahulu untuk membuka pilihan babak">
+            <span>📚</span> Pilih Babak 🔒
+          </button>
+          <button id="btn-reset-game" class="btn btn-ghost" title="Reset seluruh data seperti baru untuk presentasi">
+            <span>🔄</span> Reset Data Game
+          </button>
+        </div>
+      </div>
+
+      <!-- Pet Container (Bottom-Right with Safe Margin) -->
+      <div id="title-pet-container" class="pet-container pet-container--title">
+        <div id="title-pet-sprite" class="pet-sprite" role="button" tabindex="0" aria-label="Pet the cat!">
+          <span class="pet-emoji">🐱</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         2. GAME SCREEN (Visual Novel Gameplay)
+         ═══════════════════════════════════════════ -->
+    <section id="game-screen" class="screen" style="display:none;">
+
+      <!-- HUD Bar -->
+      <header id="game-hud" class="game-hud">
+        <div class="hud-left">
+          <span id="hud-chapter-title" class="hud-chapter-title">Babak 1: Sebelum Jadian</span>
+        </div>
+        <div class="hud-right">
+          <button id="hud-reset-btn" class="btn btn-icon hud-btn" aria-label="Reset Semua Data" title="Reset Data Game">
+            <span>🔄</span>
+          </button>
+          <button id="hud-audio-toggle" class="btn btn-icon hud-btn" aria-label="Toggle Audio">
+            <span class="icon-audio-on">🔊</span>
+            <span class="icon-audio-off" style="display:none;">🔇</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Background Image Container -->
+      <div id="game-bg" class="game-bg">
+        <img id="game-bg-img" class="game-bg-img" src="" alt="" aria-hidden="true">
+        <div id="game-bg-light" class="game-bg-light" style="display:none;"></div>
+      </div>
+
+      <!-- Character Sprites (Left, Center, Right) -->
+      <div id="character-container" class="character-container">
+        <div id="char-slot-left" class="char-slot char-slot--left">
+          <img id="char-img-left" class="character-sprite" src="" alt="" style="display:none;">
+        </div>
+        <div id="char-slot-center" class="char-slot char-slot--center">
+          <img id="char-img-center" class="character-sprite" src="" alt="" style="display:none;">
+        </div>
+        <div id="char-slot-right" class="char-slot char-slot--right">
+          <img id="char-img-right" class="character-sprite" src="" alt="" style="display:none;">
+        </div>
+      </div>
+
+      <!-- Pet Container in Game (Positioned Safely Above Dialog) -->
+      <div id="game-pet-container" class="pet-container pet-container--game" style="display:none;">
+        <div id="game-pet-sprite" class="pet-sprite" role="button" tabindex="0" aria-label="Pet the cat!">
+          <span class="pet-emoji">🐱</span>
+        </div>
+      </div>
+
+      <!-- Dialog Box -->
+      <div id="dialog-box" class="dialog-box">
+        <div class="dialog-inner">
+          <!-- Speaker Name Badge -->
+          <div id="dialog-speaker" class="dialog-speaker" style="display:none;">
+            <span id="dialog-speaker-name" class="dialog-speaker-name"></span>
+          </div>
+
+          <!-- Dialog Text (Typewriter target) -->
+          <div id="dialog-text-wrapper" class="dialog-text-wrapper">
+            <p id="dialog-text" class="dialog-text"></p>
+          </div>
+
+          <!-- Next Arrow Button -->
+          <button id="dialog-next-btn" class="dialog-next-btn" aria-label="Lanjut">
+            <span class="dialog-next-icon">▼</span>
+          </button>
+
+          <!-- Choices Container -->
+          <div id="dialog-choices" class="dialog-choices" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Funny Dead-End / Game Over Overlay (Centered Safe Layout) -->
+      <div id="dead-end-modal" class="modal-overlay modal-dead-end" style="display:none;">
+        <div class="modal modal--dead-end">
+          <div class="dead-end-icon">💀</div>
+          <h2 id="dead-end-title" class="dead-end-title">THE END</h2>
+          <p id="dead-end-text" class="dead-end-text">INI BUKAN CERITA TENTANG AUREL TERNYATA CIK</p>
+          <div class="dead-end-actions">
+            <button id="btn-dead-end-retry" class="btn btn-primary btn-lg">
+              🔄 Coba Lagi
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cinematic Interlude Overlay (30 Tahun Kemudian) -->
+      <div id="interlude-overlay" class="interlude-overlay" style="display:none;">
+        <div class="interlude-content">
+          <span class="interlude-icon">⏳</span>
+          <h2 id="interlude-text" class="interlude-text">30 tahun kemudian</h2>
+        </div>
+      </div>
+
+      <!-- Confession Light Burst (Chapter 2 Adegan 6) -->
+      <div id="confession-glow" class="confession-glow" aria-hidden="true">
+        <div class="confession-glow__flash"></div>
+        <div class="confession-glow__ring confession-glow__ring--1"></div>
+        <div class="confession-glow__ring confession-glow__ring--2"></div>
+        <span class="confession-glow__heart">💗</span>
+      </div>
+
+      <!-- Scene Fade Transition (Black -> Light) -->
+      <div id="scene-fade" class="scene-fade" aria-hidden="true"></div>
+
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         3. VIDEO SCREEN (Kompilasi Kenangan)
+         ═══════════════════════════════════════════ -->
+    <section id="video-screen" class="screen" style="display:none;">
+      <div class="video-theater">
+        <div class="video-theater-inner">
+          <h2 class="video-title">Momen-Momen Kita 🎬</h2>
+          <div class="video-wrapper">
+            <video id="video-player" class="video-player" controls preload="metadata" playsinline>
+              <source src="assets/video/compilation.mp4" type="video/mp4">
+              Browsermu tidak mendukung pemutaran video.
+            </video>
+          </div>
+          <button id="btn-video-skip" class="btn btn-primary btn-lg video-skip-btn">
+            Lanjut ke Hadiah ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         4. VOUCHER SCREEN (5 Tiket Anything You Want)
+         ═══════════════════════════════════════════ -->
+    <section id="voucher-screen" class="screen" style="display:none;">
+      <div class="voucher-page">
+        <!-- Header -->
+        <div class="voucher-header">
+          <h1 class="voucher-heading">Selamat Ulang Tahun, Aurel! 🎂🎉</h1>
+          <p class="voucher-message">
+            Terima kasih sudah menjadi bagian paling indah dari cerita ini.
+            Ini 5 tiket spesial buat kamu — seluruhnya berjudul <strong>"Anything You Want"</strong>.
+            Berlaku kapan saja, tanpa syarat, tanpa batas waktu. 💝
+          </p>
+        </div>
+
+        <!-- Voucher Grid (5 Cards) -->
+        <div id="voucher-grid" class="voucher-grid">
+
+          <!-- Voucher #01 -->
+          <div class="voucher-card" data-voucher-id="1">
+            <div class="voucher-card-inner">
+              <div class="voucher-ticket-edge voucher-ticket-edge--left" aria-hidden="true"></div>
+              <div class="voucher-body">
+                <span class="voucher-number">#01</span>
+                <h3 class="voucher-title">Anything You Want</h3>
+                <p class="voucher-subtitle">Tiket Spesial #1 • Berlaku Kapan Saja</p>
+                <button class="btn btn-primary voucher-claim-btn" data-voucher-id="1">
+                  Klaim Tiket 🎫
+                </button>
+              </div>
+              <div class="voucher-ticket-edge voucher-ticket-edge--right" aria-hidden="true"></div>
+            </div>
+            <div class="voucher-claimed-overlay" data-voucher-overlay="1" style="display:none;">
+              <div class="voucher-stamp">TERKLAIM ✓</div>
+              <p class="voucher-claimed-note" data-voucher-note="1"></p>
+              <p class="voucher-claimed-date" data-voucher-date="1"></p>
+            </div>
+          </div>
+
+          <!-- Voucher #02 -->
+          <div class="voucher-card" data-voucher-id="2">
+            <div class="voucher-card-inner">
+              <div class="voucher-ticket-edge voucher-ticket-edge--left" aria-hidden="true"></div>
+              <div class="voucher-body">
+                <span class="voucher-number">#02</span>
+                <h3 class="voucher-title">Anything You Want</h3>
+                <p class="voucher-subtitle">Tiket Spesial #2 • Berlaku Kapan Saja</p>
+                <button class="btn btn-primary voucher-claim-btn" data-voucher-id="2">
+                  Klaim Tiket 🎫
+                </button>
+              </div>
+              <div class="voucher-ticket-edge voucher-ticket-edge--right" aria-hidden="true"></div>
+            </div>
+            <div class="voucher-claimed-overlay" data-voucher-overlay="2" style="display:none;">
+              <div class="voucher-stamp">TERKLAIM ✓</div>
+              <p class="voucher-claimed-note" data-voucher-note="2"></p>
+              <p class="voucher-claimed-date" data-voucher-date="2"></p>
+            </div>
+          </div>
+
+          <!-- Voucher #03 -->
+          <div class="voucher-card" data-voucher-id="3">
+            <div class="voucher-card-inner">
+              <div class="voucher-ticket-edge voucher-ticket-edge--left" aria-hidden="true"></div>
+              <div class="voucher-body">
+                <span class="voucher-number">#03</span>
+                <h3 class="voucher-title">Anything You Want</h3>
+                <p class="voucher-subtitle">Tiket Spesial #3 • Berlaku Kapan Saja</p>
+                <button class="btn btn-primary voucher-claim-btn" data-voucher-id="3">
+                  Klaim Tiket 🎫
+                </button>
+              </div>
+              <div class="voucher-ticket-edge voucher-ticket-edge--right" aria-hidden="true"></div>
+            </div>
+            <div class="voucher-claimed-overlay" data-voucher-overlay="3" style="display:none;">
+              <div class="voucher-stamp">TERKLAIM ✓</div>
+              <p class="voucher-claimed-note" data-voucher-note="3"></p>
+              <p class="voucher-claimed-date" data-voucher-date="3"></p>
+            </div>
+          </div>
+
+          <!-- Voucher #04 -->
+          <div class="voucher-card" data-voucher-id="4">
+            <div class="voucher-card-inner">
+              <div class="voucher-ticket-edge voucher-ticket-edge--left" aria-hidden="true"></div>
+              <div class="voucher-body">
+                <span class="voucher-number">#04</span>
+                <h3 class="voucher-title">Anything You Want</h3>
+                <p class="voucher-subtitle">Tiket Spesial #4 • Berlaku Kapan Saja</p>
+                <button class="btn btn-primary voucher-claim-btn" data-voucher-id="4">
+                  Klaim Tiket 🎫
+                </button>
+              </div>
+              <div class="voucher-ticket-edge voucher-ticket-edge--right" aria-hidden="true"></div>
+            </div>
+            <div class="voucher-claimed-overlay" data-voucher-overlay="4" style="display:none;">
+              <div class="voucher-stamp">TERKLAIM ✓</div>
+              <p class="voucher-claimed-note" data-voucher-note="4"></p>
+              <p class="voucher-claimed-date" data-voucher-date="4"></p>
+            </div>
+          </div>
+
+          <!-- Voucher #05 -->
+          <div class="voucher-card" data-voucher-id="5">
+            <div class="voucher-card-inner">
+              <div class="voucher-ticket-edge voucher-ticket-edge--left" aria-hidden="true"></div>
+              <div class="voucher-body">
+                <span class="voucher-number">#05</span>
+                <h3 class="voucher-title">Anything You Want</h3>
+                <p class="voucher-subtitle">Tiket Spesial #5 • Berlaku Kapan Saja</p>
+                <button class="btn btn-primary voucher-claim-btn" data-voucher-id="5">
+                  Klaim Tiket 🎫
+                </button>
+              </div>
+              <div class="voucher-ticket-edge voucher-ticket-edge--right" aria-hidden="true"></div>
+            </div>
+            <div class="voucher-claimed-overlay" data-voucher-overlay="5" style="display:none;">
+              <div class="voucher-stamp">TERKLAIM ✓</div>
+              <p class="voucher-claimed-note" data-voucher-note="5"></p>
+              <p class="voucher-claimed-date" data-voucher-date="5"></p>
+            </div>
+          </div>
+
+        </div><!-- /voucher-grid -->
+
+        <!-- Action Button -->
+        <div class="voucher-actions">
+          <button id="btn-voucher-back" class="btn btn-secondary voucher-back-btn">
+            ← Kembali ke Menu Utama
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════
+         5. CHAPTER SELECT MODAL
+         ═══════════════════════════════════════════ -->
+    <div id="chapter-select-modal" class="modal-overlay" style="display:none;">
+      <div class="modal modal--chapter-select">
+        <button id="chapter-select-close-btn" class="btn btn-icon modal-close-btn" aria-label="Tutup">✕</button>
+
+        <h2 class="modal-title">Pilih Babak Cerita</h2>
+
+        <div class="chapter-select-grid">
+          <!-- Chapter 1 -->
+          <button class="chapter-card" data-chapter="1">
+            <div class="chapter-card-icon">💌</div>
+            <div class="chapter-card-info">
+              <h3 class="chapter-card-title">Babak 1: Sebelum Jadian</h3>
+              <p class="chapter-card-desc">Kelahiran sang putri, tragedi sungai dress putih, dan meluncur bareng Ibet.</p>
+            </div>
+          </button>
+
+          <!-- Chapter 2 -->
+          <button class="chapter-card" data-chapter="2">
+            <div class="chapter-card-icon">💕</div>
+            <div class="chapter-card-info">
+              <h3 class="chapter-card-title">Babak 2: Tahun Pertama</h3>
+              <p class="chapter-card-desc">Kuliah, drama telat, cowo nonchalant di parkiran, lego Luigi, dan resmi jadian.</p>
+            </div>
+          </button>
+
+          <!-- Chapter 3 -->
+          <button class="chapter-card" data-chapter="3">
+            <div class="chapter-card-icon">💖</div>
+            <div class="chapter-card-info">
+              <h3 class="chapter-card-title">Babak 3: Tahun Kedua</h3>
+              <p class="chapter-card-desc">30 tahun kemudian demi BAB, kuliner ekstrem berdua, dan kado spesial di Kopken.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         6. VOUCHER CLAIM MODAL
+         ═══════════════════════════════════════════ -->
+    <div id="claim-modal" class="modal-overlay" style="display:none;">
+      <div class="modal modal--claim">
+        <h2 class="modal-title">Klaim Tiket Spesial 🎫</h2>
+        <p class="claim-modal-desc">
+          Mau pakai tiket <strong>"Anything You Want"</strong> ini buat apa? Tulis permintaanmu di bawah — apapun boleh! 💫
+        </p>
+        <textarea
+          id="claim-wish-input"
+          class="claim-wish-textarea"
+          placeholder="Tulis keinginanmu di sini..."
+          rows="4"
+          maxlength="500"
+        ></textarea>
+        <div class="claim-modal-actions">
+          <button id="btn-claim-confirm" class="btn btn-primary" data-voucher-id="">
+            ✅ Konfirmasi Klaim
+          </button>
+          <button id="btn-claim-cancel" class="btn btn-secondary">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         7. RESET CONFIRMATION MODAL
+         ═══════════════════════════════════════════ -->
+    <div id="reset-modal" class="modal-overlay" style="display:none;">
+      <div class="modal modal--reset">
+        <h2 class="modal-title">Reset Semua Data? 🔄</h2>
+        <p class="reset-modal-desc" style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-6); text-align: center; line-height: 1.5;">
+          Seluruh progres babak, tiket yang telah diklaim, dan pengaturan suara akan dihapus.
+          Game akan kembali persis seperti baru untuk siap dipresentasikan!
+        </p>
+        <div class="claim-modal-actions" style="display: flex; gap: var(--space-3); justify-content: center;">
+          <button id="btn-reset-confirm" class="btn btn-primary">
+            ✅ Ya, Reset Sekarang
+          </button>
+          <button id="btn-reset-cancel" class="btn btn-secondary">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         7. PET SPEECH BUBBLE & HEART PARTICLES
+         ═══════════════════════════════════════════ -->
+    <div id="pet-bubble" class="pet-bubble" style="display:none;">
+      <p id="pet-bubble-text" class="pet-bubble-text">Meow~ 💕</p>
+    </div>
+    <div id="particles-container" class="particles-container" aria-hidden="true"></div>
+
+  </div><!-- /#game-stage -->
+
+
+  <!-- ═══════════════════════════════════════════
+       SCRIPTS (Loaded sequentially)
+       ═══════════════════════════════════════════ -->
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/pet.js"></script>
+  <script src="js/engine.js"></script>
+
+</body>
+</html>

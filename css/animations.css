@@ -1,0 +1,597 @@
+/* ============================================================
+   animations.css — Birthday Visual Novel for Aurel
+   All keyframes, transitions & animation utility classes
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   1. TYPEWRITER CURSOR BLINK
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background-color: var(--text-main);
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. SCREEN TRANSITIONS — Fade In / Fade Out
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.screen-enter {
+  animation: fadeIn 0.6s ease both;
+}
+
+.screen-exit {
+  animation: fadeOut 0.6s ease both;
+  pointer-events: none;           /* prevent interaction while leaving */
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease both;
+}
+
+.fade-out {
+  animation: fadeOut 0.6s ease both;
+}
+
+/* Slower variants for heavier transitions (chapter intros, etc.) */
+.fade-in-slow  { animation: fadeIn  1s ease both; }
+.fade-out-slow { animation: fadeOut 1s ease both; }
+
+/* ─────────────────────────────────────────────────────────────
+   3. PET BOUNCE / SQUISH ON CLICK
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes petBounce {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(0.85, 1.12); }   /* squish down  */
+  50%  { transform: scale(1.15, 0.9); }    /* stretch up   */
+  75%  { transform: scale(0.97, 1.03); }   /* settle       */
+  100% { transform: scale(1); }
+}
+
+.pet-bounce {
+  animation: petBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. HEART PARTICLES FLOATING UP
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes floatHeart {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    opacity: 0.9;
+    transform: translate(8px, -20px) scale(1.05) rotate(8deg);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translate(-6px, -45px) scale(0.95) rotate(-6deg);
+  }
+  75% {
+    opacity: 0.3;
+    transform: translate(5px, -65px) scale(0.85) rotate(10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-3px, -80px) scale(0.7) rotate(-4deg);
+  }
+}
+
+.heart-particle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  animation: floatHeart 1s ease-out both;
+  z-index: 100;
+}
+
+/* Slight randomness via nth-child offsets */
+.heart-particle:nth-child(odd) {
+  animation-duration: 1.1s;
+}
+.heart-particle:nth-child(3n) {
+  animation-duration: 0.9s;
+}
+.heart-particle:nth-child(4n+1) {
+  font-size: 1rem;
+}
+.heart-particle:nth-child(5n+2) {
+  font-size: 1.4rem;
+}
+
+/* CSS-only heart shape (alternative to emoji) */
+.heart-shape {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  animation: floatHeart 1s ease-out both;
+  z-index: 100;
+}
+
+.heart-shape::before,
+.heart-shape::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 22px;
+  background: var(--color-primary);
+  border-radius: 14px 14px 0 0;
+}
+
+.heart-shape::before {
+  left: 7px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.heart-shape::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. TROPHY TOAST SLIDE IN / OUT
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.toast-enter {
+  animation: slideInRight 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.toast-exit {
+  animation: slideOutRight 0.4s ease-in both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. PET SPEECH BUBBLE — Pop In / Pop Out
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes popIn {
+  0%   { transform: scale(0);   opacity: 0; }
+  70%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes popOut {
+  0%   { transform: scale(1);   opacity: 1; }
+  30%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0);   opacity: 0; }
+}
+
+.speech-bubble-enter {
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.speech-bubble-exit {
+  animation: popOut 0.25s ease-in both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. DIALOG BOX ENTRANCE
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes slideUpDialog {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dialog-enter {
+  animation: slideUpDialog 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   8. CHOICE BUTTONS — STAGGERED APPEARANCE
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes choiceFadeSlide {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.choice-enter {
+  opacity: 0;
+  animation: choiceFadeSlide 0.4s ease-out both;
+}
+
+.choice-enter:nth-child(1) { animation-delay: 0.08s; }
+.choice-enter:nth-child(2) { animation-delay: 0.18s; }
+.choice-enter:nth-child(3) { animation-delay: 0.28s; }
+.choice-enter:nth-child(4) { animation-delay: 0.38s; }
+.choice-enter:nth-child(5) { animation-delay: 0.48s; }
+.choice-enter:nth-child(6) { animation-delay: 0.58s; }
+
+/* ─────────────────────────────────────────────────────────────
+   9. VOUCHER CARD HOVER
+   ───────────────────────────────────────────────────────────── */
+
+.voucher-card {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease;
+}
+
+.voucher-card:hover {
+  transform: scale(1.03) rotate(-0.8deg);
+  box-shadow:
+    0 12px 32px rgba(244, 162, 184, 0.22),
+    0 4px 12px rgba(67, 54, 56, 0.08);
+}
+
+.voucher-card:active {
+  transform: scale(0.98) rotate(0deg);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. SCRAPBOOK CARD UNLOCK
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes unlockCard {
+  0% {
+    filter: grayscale(1) blur(3px);
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
+  60% {
+    filter: grayscale(0.2) blur(0.5px);
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+  100% {
+    filter: grayscale(0) blur(0);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.scrapbook-unlock {
+  animation: unlockCard 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Locked state styling */
+.scrapbook-locked {
+  filter: grayscale(1) blur(2px);
+  opacity: 0.5;
+  transform: scale(0.97);
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11. TITLE SCREEN FLOATING ELEMENTS
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Offset variants for multiple decorations */
+.float-delay-1 { animation-delay: 0s; }
+.float-delay-2 { animation-delay: 0.5s; }
+.float-delay-3 { animation-delay: 1s; }
+.float-delay-4 { animation-delay: 1.6s; }
+
+.float-slow {
+  animation: float 4.5s ease-in-out infinite;
+}
+
+.float-fast {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   12. SPARKLE / TWINKLE
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+.twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.twinkle:nth-child(2n)   { animation-duration: 2.4s; animation-delay: 0.3s; }
+.twinkle:nth-child(3n)   { animation-duration: 1.8s; animation-delay: 0.7s; }
+.twinkle:nth-child(4n+1) { animation-duration: 2.8s; animation-delay: 1.1s; }
+.twinkle:nth-child(5n+2) { animation-duration: 2.2s; animation-delay: 0.5s; }
+
+/* Star shape via CSS */
+.sparkle-star {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+}
+
+.sparkle-star::before,
+.sparkle-star::after {
+  content: '';
+  position: absolute;
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+.sparkle-star::before {
+  width: 2px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sparkle-star::after {
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   13. BACKGROUND GENTLE MOVEMENT (PARALLAX)
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes bgPan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-pan {
+  animation: bgPan 30s ease-in-out infinite;
+  background-size: 120% 120%;
+}
+
+@keyframes bgPanVertical {
+  0%   { background-position: 50% 0%; }
+  50%  { background-position: 50% 100%; }
+  100% { background-position: 50% 0%; }
+}
+
+.bg-pan-vertical {
+  animation: bgPanVertical 25s ease-in-out infinite;
+  background-size: 110% 120%;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   14. STAMP APPEAR ON VOUCHER CLAIM
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes stampAppear {
+  0% {
+    transform: scale(2.5) rotate(-25deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.9) rotate(3deg);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.05) rotate(-1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.stamp-enter {
+  animation: stampAppear 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   15. LIGHTBOX ZOOM IN
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+.lightbox-enter {
+  animation: zoomIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.lightbox-exit {
+  animation: zoomOut 0.25s ease-in both;
+}
+
+/* Lightbox overlay fade */
+.lightbox-overlay-enter {
+  animation: fadeIn 0.3s ease both;
+}
+
+.lightbox-overlay-exit {
+  animation: fadeOut 0.25s ease both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BONUS: UTILITY HELPERS
+   ───────────────────────────────────────────────────────────── */
+
+/* Generic pulse for attention / notification badge */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+.pulse {
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+/* Gentle shake — wrong answer feedback */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-6px); }
+  30%      { transform: translateX(5px); }
+  45%      { transform: translateX(-4px); }
+  60%      { transform: translateX(3px); }
+  75%      { transform: translateX(-2px); }
+}
+
+.shake {
+  animation: shake 0.45s ease-in-out;
+}
+
+/* Wiggle — subtle playful emphasis */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-3deg); }
+  75%      { transform: rotate(3deg); }
+}
+
+.wiggle {
+  animation: wiggle 1.5s ease-in-out infinite;
+}
+
+/* Slide up generic */
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Chapter title reveal */
+@keyframes chapterReveal {
+  0% {
+    letter-spacing: 0.5em;
+    opacity: 0;
+    filter: blur(6px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.chapter-title-enter {
+  animation: chapterReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Confetti burst — tiny rotate + fall */
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  border-radius: 2px;
+  animation: confettiFall 2.5s ease-in both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REDUCED MOTION — Respect accessibility preferences
+   ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
